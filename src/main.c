@@ -1,7 +1,5 @@
 #include <avr/io.h>
-#include <util/delay.h>
-
-char counter;
+#include <interrupts.h>
 
 int main()
 {

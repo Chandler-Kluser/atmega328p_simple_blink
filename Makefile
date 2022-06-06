@@ -23,7 +23,7 @@ CFLAGS	+= -Wall
 CFLAGS	+= -Os
 
 # ldflags
-LDFLAGS	= -Wl,-Tld\linker_script_atmega328p.ld,--cref
+LDFLAGS	= -Wl,-Tld/linker_script_atmega328p.ld,--cref
 
 .PHONY: all clean dump flash
 
@@ -43,10 +43,7 @@ $(BIN_DIR) $(OBJ_DIR):
 	mkdir $@
 
 clean:
-	del /F /Q obj
-	rmdir obj
-	del /F /Q bin
-	rmdir bin
+	rm -rf bin obj
 
 dump: $(BIN_DIR)/dump.lst
 	$(SIZE) $(BIN_DIR)/main.elf
@@ -55,4 +52,4 @@ $(BIN_DIR)/dump.lst: $(BIN_DIR)/main.elf
 	$(DUMP) -d .text -d .data $(BIN_DIR)/main.elf > $(BIN_DIR)/dump.lst
 
 flash: $(BIN_DIR)/main.bin
-	avrdude -c usbasp -p m328p -U flash:w:"C:\avr_project\bin\main.bin":a 
+	avrdude -c usbasp -p m328p -U flash:w:$(BIN_DIR)/main.bin:a 
