@@ -19,8 +19,11 @@ DEF 	+= -DF_CPU=16000000UL
 
 # cflags
 CFLAGS	 = -mmcu=atmega328p
-CFLAGS	+= -Wall
 CFLAGS	+= -Os
+ifdef DEBUG
+	CFLAGS	+= -Wall
+	CFLAGS	+= -g
+endif
 
 # ldflags
 LDFLAGS	= -Wl,-Tld/linker_script_atmega328p.ld,--cref
@@ -34,7 +37,7 @@ $(BIN_DIR)/main.bin: $(BIN_DIR)/main.elf
 	$(SIZE) $(BIN_DIR)/main.elf
 
 $(BIN_DIR)/main.elf: $(OBJS) | $(BIN_DIR)
-	@$(CC) $(CFLAGS) $(OBJS) --output $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) --output $@ $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(DEF) $(INC) $(CFLAGS) -c $< -o $@
